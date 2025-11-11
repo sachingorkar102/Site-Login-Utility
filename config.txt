@@ -1,0 +1,3 @@
+chrome_path:C:\Program Files\Google\Chrome\Application\chrome.exe
+user_data_path:C:\chrome_debug
+spreadsheet_id:1ket5HQrme6XZaQ75Y5WIPDRWwLwD3BxTHlsk-Ca0w5o
