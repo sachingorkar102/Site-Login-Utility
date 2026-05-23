@@ -12,14 +12,14 @@ class IncomeTaxSite(BaseSite):
             site_name="Income Tax"
         )
 
-    def login(self, tan, pan, username, password):
-        if(username == "" or password == ""):
+    def login(self, tan, pan, password):
+        if(pan == "" or password == ""):
             messagebox.showerror("Error","Empty Fields, can't login")
             return
         url = "https://eportal.incometax.gov.in/iec/foservices/#/login"
         self.open_new_tab(url)
         input_username = self.wait_and_find(ChromeManager.get_driver(),By.NAME,"panAdhaarUserId")
-        input_username.send_keys(username)
+        input_username.send_keys(pan)
 
         button1 = self.wait_and_find(ChromeManager.get_driver(),By.XPATH,"""//*[@id="maincontentid"]/app-login/div/app-login-page/div/div[2]/div[1]/div[2]/button""")
         button1.click()

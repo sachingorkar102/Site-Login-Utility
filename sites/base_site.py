@@ -43,8 +43,9 @@ class BaseSite:
         try:
             creds = Credentials.from_service_account_file(self.CREDENTIALS, scopes=self.SCOPES)
             SheetManager.set_sheet(gspread.authorize(creds).open_by_key(self.spreadsheet_id))
-        except:
+        except Exception as e:
             print("Failed to load the sheet")
+            print(e)
 
 
     def start_chrome(self):

@@ -1,8 +1,12 @@
 from .base_site import BaseSite
 from selenium import webdriver
 from sites.driver_manager import ChromeManager
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 from tkinter import messagebox
 from selenium.webdriver.common.by import By
+import time
+
 
 class TracesSite(BaseSite):
     def __init__(self):
@@ -11,22 +15,42 @@ class TracesSite(BaseSite):
             site_name="Traces"
         )
 
-    
-
-    def login(self, tan,pan, username, password):
-        if(tan == "" or username == "" or password == ""):
+    def login(self, tan,pan, password):
+        if(tan == "" or password == ""):
             messagebox.showerror("Error","Empty Fields, can't login")
             return
-        url = "https://www.tdscpc.gov.in/app/login.xhtml?usr=Ded"
+        url = "https://traces.tdscpc.gov.in/auth/login/loginScreen"
         self.open_new_tab(url)
-        input_username = self.wait_and_find(ChromeManager.get_driver(),By.NAME,"username")
-        input_password = self.wait_and_find(ChromeManager.get_driver(),By.NAME,"j_password")
-        input_tan = self.wait_and_find(ChromeManager.get_driver(),By.NAME,"j_tanPan")
+        
+        driver = ChromeManager.get_driver()
 
-        input_username.send_keys(username)
-        input_password.send_keys(password)
-        input_tan.send_keys(tan)
+        time.sleep(5)
 
-        input_captcha = ChromeManager.get_driver().find_element(By.NAME,"j_captcha")
-        input_captcha.send_keys("")
-        input_captcha.click()
+        actions = ActionChains(driver)
+
+
+        # USERNAME
+        for _ in range(19):
+            actions.send_keys(Keys.TAB).perform()
+
+        time.sleep(1)
+
+        for ch in tan:
+            actions.send_keys(ch).perform()
+            time.sleep(0.1)
+
+        # PASSWORD
+        for _ in range(2):
+            actions.send_keys(Keys.TAB).perform()
+
+        time.sleep(1)
+
+        for ch in password:
+            actions.send_keys(ch).perform()
+            time.sleep(0.1)
+
+        # CAPTCHA
+        for _ in range(4):
+            actions.send_keys(Keys.TAB).perform()
+
+

@@ -49,3 +49,4 @@ dist/config.txt
 dist/SiteLoginUtility.exe
 __pycache__/main.cpython-313.pyc
 SiteLoginUtility.spec
+dist/dist.zip

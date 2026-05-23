@@ -69,27 +69,47 @@ class LoginApp:
 
         style.configure("Header.TFrame", background="#f7f7f7")
 
-        # ttk.Button(header_frame, text="↻", width=3, command=self.refresh_action).pack(side="left")
         ttk.Label(
-            header_frame, text="Site Login", font=("Segoe UI", 14, "bold"), foreground="#333"
+            header_frame,
+            text="Site Login",
+            font=("Segoe UI", 14, "bold"),
+            foreground="#333"
         ).pack(side="left", expand=True)
 
         frame = ttk.Frame(self.root)
         frame.pack(pady=10)
 
         # --- Login Site ---
-        ttk.Label(frame, text="Select Login Site:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
-        self.site_var = tk.StringVar(value="TRACES")
-        self.site_dropdown = ttk.Combobox(
-            frame, textvariable=self.site_var, values=list(SITE_CLASSES.keys()), state="readonly", width=33
+        ttk.Label(frame, text="Select Login Site:").grid(
+            row=0, column=0, padx=10, pady=5, sticky="w"
         )
+
+        self.site_var = tk.StringVar(value="TRACES")
+
+        self.site_dropdown = ttk.Combobox(
+            frame,
+            textvariable=self.site_var,
+            values=list(SITE_CLASSES.keys()),
+            state="readonly",
+            width=33
+        )
+
         self.site_dropdown.grid(row=0, column=1, padx=10, pady=5)
         self.site_dropdown.bind("<<ComboboxSelected>>", self.load_site_data)
 
         # --- Assessee ---
-        ttk.Label(frame, text="Select Assessee:").grid(row=1, column=0, padx=10, pady=5, sticky="w")
+        ttk.Label(frame, text="Select Assessee:").grid(
+            row=1, column=0, padx=10, pady=5, sticky="w"
+        )
+
         self.assessee_var = tk.StringVar()
-        self.assessee_dropdown = AutocompleteCombobox(frame, textvariable=self.assessee_var, width=35)
+
+        self.assessee_dropdown = AutocompleteCombobox(
+            frame,
+            textvariable=self.assessee_var,
+            width=35
+        )
+
         self.assessee_dropdown.grid(row=1, column=1, padx=10, pady=5)
         self.assessee_dropdown.bind("<<ComboboxSelected>>", self.on_assessee_selected)
         self.assessee_dropdown.bind("<Return>", self.on_assessee_selected)
@@ -98,30 +118,54 @@ class LoginApp:
         self.tan_var = tk.StringVar()
         self.pan_var = tk.StringVar()
 
-        ttk.Label(frame, text="TAN:").grid(row=2, column=0, padx=10, pady=5, sticky="w")
-        ttk.Entry(frame, textvariable=self.tan_var, width=35).grid(row=2, column=1, padx=10, pady=5)
+        ttk.Label(frame, text="TAN:").grid(
+            row=2, column=0, padx=10, pady=5, sticky="w"
+        )
 
-        ttk.Label(frame, text="PAN:").grid(row=3, column=0, padx=10, pady=5, sticky="w")
-        ttk.Entry(frame, textvariable=self.pan_var, width=35).grid(row=3, column=1, padx=10, pady=5)
+        ttk.Entry(frame, textvariable=self.tan_var, width=35).grid(
+            row=2, column=1, padx=10, pady=5
+        )
 
-        # --- Username / Password ---
-        self.username_var = tk.StringVar()
+        ttk.Label(frame, text="PAN:").grid(
+            row=3, column=0, padx=10, pady=5, sticky="w"
+        )
+
+        ttk.Entry(frame, textvariable=self.pan_var, width=35).grid(
+            row=3, column=1, padx=10, pady=5
+        )
+
+        # --- Password Only ---
         self.password_var = tk.StringVar()
 
-        ttk.Label(frame, text="Username:").grid(row=4, column=0, padx=10, pady=5, sticky="w")
-        ttk.Entry(frame, textvariable=self.username_var, width=35).grid(row=4, column=1, padx=10, pady=5)
+        ttk.Label(frame, text="Password:").grid(
+            row=4, column=0, padx=10, pady=5, sticky="w"
+        )
 
-        ttk.Label(frame, text="Password:").grid(row=5, column=0, padx=10, pady=5, sticky="w")
-        ttk.Entry(frame, textvariable=self.password_var, width=35).grid(row=5, column=1, padx=10, pady=5)
+        ttk.Entry(frame, textvariable=self.password_var, width=35).grid(
+            row=4, column=1, padx=10, pady=5
+        )
 
         # --- Buttons Frame ---
         button_frame = ttk.Frame(self.root)
         button_frame.pack(pady=20)
-        
 
-        ttk.Button(button_frame, text="Login", command=self.login_action).grid(row=0, column=0, padx=10)
-        ttk.Button(button_frame, text="Copy Details", command=self.copy_details_action).grid(row=0, column=1, padx=10)
-        ttk.Button(button_frame, text="Refresh", command=self.refresh_action).grid(row=0, column=2, padx=10)
+        ttk.Button(
+            button_frame,
+            text="Login",
+            command=self.login_action
+        ).grid(row=0, column=0, padx=10)
+
+        ttk.Button(
+            button_frame,
+            text="Copy Details",
+            command=self.copy_details_action
+        ).grid(row=0, column=1, padx=10)
+
+        ttk.Button(
+            button_frame,
+            text="Refresh",
+            command=self.refresh_action
+        ).grid(row=0, column=2, padx=10)
 
         self.load_site_data()
 
@@ -136,7 +180,7 @@ class LoginApp:
                     self.assessee_dropdown.set("")
                     self.tan_var.set("")
                     self.pan_var.set("")
-                    self.username_var.set("")
+                    # self.username_var.set("")
                     self.password_var.set("")
                 else:
                     self.on_assessee_selected()
@@ -152,7 +196,7 @@ class LoginApp:
         tan,pan, username, password = self.get_current_site().get_login_details(assessee)
         self.tan_var.set(tan or "")
         self.pan_var.set(pan or "")
-        self.username_var.set(username or "")
+        # self.username_var.set(username or "")
         self.password_var.set(password or "")
 
     def refresh_action(self):
@@ -165,15 +209,19 @@ class LoginApp:
                 
 
     def copy_details_action(self):
-        if(self.get_string(self.assessee_var) == "" or self.get_string(self.username_var) == "" or self.get_string(self.password_var) == ""): return
+        if(self.get_string(self.assessee_var) == "" or self.get_string(self.password_var) == ""): return
         site_name = self.get_current_site().site_name
         details = f"{site_name} Login Details of {self.get_string(self.assessee_var)}"
-        if(self.get_string(self.tan_var) != ""):
-            details += f"\n TAN: {self.get_string(self.tan_var)}"
-        if(self.get_string(self.pan_var) != ""):
-            details += f"\n PAN: {self.get_string(self.pan_var)}"
-        if(self.get_string(self.username_var) != ""):
-            details += f"\n Username: {self.get_string(self.username_var)}"
+        if((site_name == "Traces" or site_name == "Income Tax TDS") and self.get_string(self.tan_var) != ""):
+            details += f"\n User ID: {self.get_string(self.tan_var)}"
+        if(site_name == "Income Tax" and self.get_string(self.pan_var) != ""):
+            details += f"\n User ID: {self.get_string(self.pan_var)}"
+        # if(self.get_string(self.tan_var) != ""):
+        #     details += f"\n TAN: {self.get_string(self.tan_var)}"
+        # if(self.get_string(self.pan_var) != ""):
+        #     details += f"\n PAN: {self.get_string(self.pan_var)}"
+        # if(self.get_string(self.username_var) != ""):
+        #     details += f"\n Username: {self.get_string(self.username_var)}"
         if(self.get_string(self.password_var) != ""):
             details += f"\n Password: {self.get_string(self.password_var)}"
         
@@ -183,9 +231,9 @@ class LoginApp:
     def login_action(self):
         tan = self.get_string(self.tan_var)
         pan = self.get_string(self.pan_var)
-        username = self.get_string(self.username_var)
+        # username = self.get_string(self.username_var)
         password = self.get_string(self.password_var)
-        self.get_current_site().login(tan=tan,pan=pan,username=username,password=password)
+        self.get_current_site().login(tan=tan,pan=pan,password=password)
         
     def get_string(self,var):
         return (var.get() or "").strip()
